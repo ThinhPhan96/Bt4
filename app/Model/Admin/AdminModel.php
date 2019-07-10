@@ -39,4 +39,18 @@ class AdminModel extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getUpdate($id, $name)
+    {
+        $admin = self::find($id);
+        $admin->name = $name;
+        $admin->save();
+        return $admin;
+    }
+
+    public function getIndex()
+    {
+        $admin['admin'] = self::all();
+        return $admin;
+    }
 }

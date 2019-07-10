@@ -3,51 +3,44 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AuthorRequest;
+use App\Http\Requests\DeleteAuthorRequest;
 use App\Model\Admin\AuthorModel;
-use Illuminate\Http\Request;
+use App\Repositories\UserRepository;
 use App\Http\Controllers\Controller;
 
 class AuthorController extends Controller
 {
     protected $authorModel;
-    public function __construct(AuthorModel $authorModel)
+    protected $userRepository;
+
+    public function __construct(AuthorModel $authorModel, UserRepository $userRepository)
     {
         $this->authorModel = $authorModel;
+        $this->userRepository = $userRepository;
     }
 
     public function index()
     {
-        $author['authors'] = $this->authorModel->index();
-
+        $author = $this->authorModel->getIndex();
         return view('admin.author.index', $author);
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(AuthorRequest $request)
     {
+        $author = $this->authorModel->getStore($request->name);
+        return redirect()->route('author.index')->with('message', "Thêm" . " $author->name thành công");
     }
 
-    public function show($id)
+    public function changeAjaxAuthor(AuthorRequest $request)
     {
-        //
+        $this->authorModel->getUpdate($request->id, $request->name);
+        return "success";
     }
 
-    public function edit($id)
+    public function destroyAjaxAuthor(DeleteAuthorRequest $request)
     {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
+        $id = $request->id;
+        $this->authorModel->getDestroy($id);
+        return "success";
     }
 }

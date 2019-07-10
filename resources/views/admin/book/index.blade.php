@@ -15,7 +15,7 @@
     <div class="container" style="margin-right: 20px">
         <div class="row">
             <div class="col-md-12">
-                <h1>Quản lý tác giả</h1>
+                <h1>Quản lý sach</h1>
             </div>
         </div>
         <div class="row">
@@ -23,7 +23,10 @@
                 <table class="table table-striped table-bordered" id="table">
                     <tr>
                         <th style="text-align: center">STT</th>
+                        <th style="text-align: center">Tên sach</th>
                         <th style="text-align: center">Tên tác giả</th>
+                        <th style="text-align: center">Trạng thái</th>
+                        <th style="text-align: center">Người mượn</th>
                         <th class="text-center" width="150px">
                             <a data-toggle="modal" data-target="#create" href="#"
                                class="create-modal btn btn-success btn-sm">
@@ -33,18 +36,29 @@
                     </tr>
                     {{ csrf_field() }}
                     <?php  $no = 1; ?>
-                    @foreach ($user as $key => $user)
-                        <tr class="post{{$user->id}}">
+                    @foreach ($books as $key => $book)
+                        <tr class="post{{$book->id}}">
                             <td style="text-align: center">{{$key + 1 + ($page - 1) * PAGE_SIZE }}</td>
-                            <td class="name" style="text-align: center">{{ $user->name }}</td>
+                            <td class="name" style="text-align: center">{{ $book->name }}</td>
+                            <td class="author_id" style="text-align: center">{{ $book->author_id }}</td>
+                            <td class="name" style="text-align: center">
+                                @if($book->status == 0)
+                                    Chưa mượn
+                                    @elseif($book->status == 1)
+                                Đã mượn
+                                    @elseif($book->status == 2)
+                                Đang xem
+                                    @endif
+                            </td>
+                            <td class="name" style="text-align: center">{{ $book->author_id }}</td>
                             <td style="text-align: center">
-                                <a class=" edit-modal btn btn-warning btn-sm" data-id="{{$user->id}}"
-                                   data-name="{{$user->name}}">
-                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                <a class=" edit-modal btn btn-warning btn-sm" data-id="{{$book->id}}"
+                                   data-name="{{$book->name}}">
+                                    Sửa
                                 </a>
-                                <a class="delete-modal btn btn-danger btn-sm" data-id="{{$user->id}}"
-                                   data-name="{{$user->name}}">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                <a class="delete-modal btn btn-danger btn-sm" data-id="{{$book->id}}"
+                                   data-name="{{$book->name}}">
+                                    Xóa
                                 </a>
                             </td>
                         </tr>
@@ -52,7 +66,7 @@
                 </table>
             </div>
             <div style="margin-left: 900px">
-            {{$authors->links()}}
+                {{$books->links()}}
             </div>
         </div>
 
@@ -119,15 +133,15 @@
             });
             $('.delete-modal').on('click', function () {
                 id = $(this).data('id');
-                    $.ajax({
-                        url: DELETE_URL,
-                        type: "POST",
-                        data: {
-                            id: id,
-                        },
-                        success: function (data) {
-                        }
-                    });
+                $.ajax({
+                    url: DELETE_URL,
+                    type: "POST",
+                    data: {
+                        id: id,
+                    },
+                    success: function (data) {
+                    }
+                });
             });
         });
     </script>
