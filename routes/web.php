@@ -27,6 +27,8 @@ Route::prefix('admin')->group(function () {
         Route::resource('trash', 'Admin\TrashController');
         Route::resource('root', 'Admin\RootController');
         Route::resource('book', 'Admin\BookController');
+        Route::post('book/edit', 'Admin\BookController@editBook')->name('admin.book.edit');
+        Route::post('book/destroy', 'Admin\BookController@destroyBook')->name('admin.book.destroy');
         Route::post('root/edit', 'Admin\RootController@editAdmin')->name('admin.root.edit');
         Route::post('author/ajax', 'Admin\AuthorController@changeAjaxAuthor')->name('admin.author.ajax');
         Route::post('author/destroyajax', 'Admin\AuthorController@destroyAjaxAuthor')->name('admin.author.destroyajax');

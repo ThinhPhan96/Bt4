@@ -21,6 +21,20 @@
         <div class="row">
             <div class="table table-responsive">
                 <table class="table table-striped table-bordered" id="table">
+                    <ul class="nav nav-tabs float-right">
+                        <li class="nav-item">
+                            <a class="nav-link " href="{{ route('book.index') }}">Tất cả</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('book.show',0) }}">Chưa mượn</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('book.show',2) }}">Đang xem</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('book.show',1) }}">Đã mượn</a>
+                        </li>
+                    </ul>
                     <tr>
                         <th style="text-align: center">STT</th>
                         <th style="text-align: center">Tên sach</th>
@@ -40,17 +54,21 @@
                         <tr class="post{{$book->id}}">
                             <td style="text-align: center">{{$key + 1 + ($page - 1) * PAGE_SIZE }}</td>
                             <td class="name" style="text-align: center">{{ $book->name }}</td>
-                            <td class="author_id" style="text-align: center">{{ $book->author_id }}</td>
-                            <td class="name" style="text-align: center">
+                            <td class="author_id" style="text-align: center">{{ $book->author['name'] }}</td>
+                            <td class="status" style="text-align: center">
                                 @if($book->status == 0)
                                     Chưa mượn
-                                    @elseif($book->status == 1)
-                                Đã mượn
-                                    @elseif($book->status == 2)
-                                Đang xem
-                                    @endif
+                                @elseif($book->status == 1)
+                                    Đã mượn
+                                @elseif($book->status == 2)
+                                    Đang xem
+                                @endif
                             </td>
-                            <td class="name" style="text-align: center">{{ $book->author_id }}</td>
+                            <td class="user" style="text-align: center">
+                                @if($book->status == 0)
+                                    Chưa có
+                                @endif
+                            </td>
                             <td style="text-align: center">
                                 <a class=" edit-modal btn btn-warning btn-sm" data-id="{{$book->id}}"
                                    data-name="{{$book->name}}">
@@ -76,19 +94,29 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Thêm mới tác giả</h4>
+                        <h4 class="modal-title">Thêm mới sách</h4>
                     </div>
                     <div class="modal-body">
-                        <form data-url="{{route('author.store')}}" class="form-horizontal" id="form_add" method="post">
+                        <form data-url="{{route('book.store')}}" class="form-horizontal" id="form_add" method="post">
                             @csrf
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Author:</label>
+                                <label class="control-label col-sm-2" for="name">Book:</label>
                                 <div class="col-sm-10">
                                     <input type="text" id="name" class="form-control" name="name"
-                                           placeholder="Tên tác giả">
+                                           placeholder="Tên book">
                                 </div>
                             </div>
-                            <button id="submit" onclick="xoa()" type="submit" class="btn btn-info">Add</button>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="author_id">Author:</label>
+                                <div class="col-sm-10">
+                                    <select name="author_id">
+                                        @foreach($authors as $author)
+                                            <option value="{{ $author->id }}"> {{ $author->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <button id="submit" type="submit" class="btn btn-info">Add</button>
                             <button style="float: right" type="button" class="btn btn-default" data-dismiss="modal">
                                 Close
                             </button>
@@ -107,8 +135,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            const EDIT_URL = "{{route('admin.author.ajax')}}";
-            const DELETE_URL = "{{route('admin.author.destroyajax')}}";
+            const EDIT_URL = "{{route('admin.book.edit')}}";
+            const DELETE_URL = "{{route('admin.book.destroy')}}";
             var id;
             $('.edit-modal').on('click', function () {
                 id = $(this).data('id');

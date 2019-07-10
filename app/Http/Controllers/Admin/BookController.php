@@ -19,40 +19,39 @@ class BookController extends Controller
 
     public function index()
     {
-        $book['books'] = $this->bookModel::paginate(PAGE_SIZE);
-        $book['page'] = $this->authorModel::paginate(PAGE_SIZE)->currentPage();
-        $book = Book::with('author')
-            $book->author->name
+        $book = $this->bookModel->getIndex();
         return view('admin.book.index', $book);
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request)
     {
-        //
+        $book = $this->bookModel->getStore($request->name, $request->author_id);
+        return redirect()->route('book.index')->with('message', "Thêm" . " $book->name thành công");
     }
 
     public function show($id)
     {
-        //
+        $book['authors'] = $this->authorModel->getAll();
+        $book['page'] = $this->bookModel->getPage();
+        $book['books'] = $this->bookModel->getWhere('status', $id);
+        return view('admin.book.index', $book);
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     public function destroy($id)
     {
         //
+    }
+
+    public function editBook(Request $request)
+    {
+        $this->bookModel->getUpdate($request->id, $request->name);
+        return "success";
+    }
+
+    public function destroyBook(Request $request)
+    {
+        $this->bookModel->getDestroy($request->id);
+        return "success";
     }
 }
