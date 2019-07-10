@@ -49,8 +49,13 @@ class AuthorModel extends Model
     {
         $author['authors'] = self::onlyTrashed()->paginate(PAGE_SIZE);
         $author['page'] = self::paginate(PAGE_SIZE)->currentPage();
-        $author['user'] = self::all();
+        $author['users'] = self::paginate(PAGE_SIZE);
         return $author;
+    }
+
+    public function getAll()
+    {
+        return self::all();
     }
 
 }

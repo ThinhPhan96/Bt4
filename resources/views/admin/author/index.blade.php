@@ -33,7 +33,7 @@
                     </tr>
                     {{ csrf_field() }}
                     <?php  $no = 1; ?>
-                    @foreach ($user as $key => $user)
+                    @foreach ($users as $key => $user)
                         <tr class="post{{$user->id}}">
                             <td style="text-align: center">{{$key + 1 + ($page - 1) * PAGE_SIZE }}</td>
                             <td class="name" style="text-align: center">{{ $user->name }}</td>
@@ -52,7 +52,7 @@
                 </table>
             </div>
             <div style="margin-left: 900px">
-            {{$authors->links()}}
+            {{$users->links()}}
             </div>
         </div>
 
