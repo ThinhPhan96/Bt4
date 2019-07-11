@@ -20,7 +20,7 @@ class BookModel extends Model
 
     public function getStore($name,$authorId)
     {
-        $book = new self();
+        $book = new $this();
         $book->name = $name;
         $book->author_id = $authorId;
         $book->save();
@@ -29,8 +29,8 @@ class BookModel extends Model
 
     public function getIndex()
     {
-        $book['books'] = self::with('author')->paginate(PAGE_SIZE);
-        $book['page'] = self::paginate(PAGE_SIZE)->currentPage();
+        $book['books'] = $this->with('author')->paginate(PAGE_SIZE);
+        $book['page'] = $this->paginate(PAGE_SIZE)->currentPage();
         $book['authors'] = AuthorModel::all();
         return $book;
     }
@@ -52,7 +52,7 @@ class BookModel extends Model
 
     public function getUpdate($id, $name)
     {
-        $book = self::find($id);
+        $book = $this->find($id);
         $book->name = $name;
         $book->save();
         return $book;
@@ -60,8 +60,22 @@ class BookModel extends Model
 
     public function getDestroy($id)
     {
-        $book = self::find($id);
+        $book = $this->find($id);
         $book->delete();
         return $book;
+    }
+
+    public function getRestore($id)
+    {
+        $author = $this->with('author')->onlyTrashed()->find($id);
+        $author->restore();
+        return $author;
+    }
+
+    public function getForceDelete($id)
+    {
+        $author = $this->with('author')->onlyTrashed()->find($id);
+        $author->forceDelete();
+        return $author;
     }
 }

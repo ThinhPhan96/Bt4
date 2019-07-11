@@ -31,29 +31,29 @@
                     </ul>
                     <tr>
                         <th style="text-align: center">STT</th>
-                        <th style="text-align: center">Tên tác giả</th>
-                        <th style="text-align: center">Tên sach</th>
+                        <th style="text-align: center">Sach</th>
+                        <th style="text-align: center">Tên tac gia</th>
                         <th class="text-center" width="150px">
                             Hành động
                         </th>
                     </tr>
                     {{ csrf_field() }}
                     <?php  $no = 1; ?>
-                    @foreach ($authors as $key => $author)
-                        <tr class="post{{$author->id}}">
+                    @foreach ($books as $key => $book)
+                        <tr class="post{{$book->id}}">
                             <td style="text-align: center">{{$key + 1 + ($page - 1) * PAGE_SIZE }}</td>
-                            <td class="name" style="text-align: center">{{ $author->name }}</td>
+                            <td class="name" style="text-align: center">{{ $book->name }}</td>
                             <td class="name" style="text-align: center">
-                                {{   isset($author->book['name'])? $author->book['name']:'chua co sach'}}
+                                {{   isset($book->author['name'])? $book->author['name']:'chua co tac gia'}}
                             </td>
                             <td style="text-align: center">
-                                <form action="{{ route('admin.trash.restore', $author->id) }}" method="POST">
+                                <form action="{{ route('admin.trashbook.restore', $book->id) }}" method="POST">
                                     @csrf
-                                    <input onclick="return confirm('Bạn muốn khôi phục tác giả này?');" type="submit" class="btn btn-info" value="Khôi phục" name="restore"/>
+                                    <input onclick="return confirm('Bạn muốn khôi phục sách này?');" type="submit" class="btn btn-info" value="Khôi phục" name="restore"/>
                                 </form>
-                                <form action="{{ route('admin.trash.forcedelete', $author->id) }}" method="POST">
+                                <form action="{{ route('admin.trashbook.forcedelete', $book->id) }}" method="POST">
                                     @csrf
-                                    <input onclick="return confirm('Bạn muốn xóa hẳn tác giả này?');" type="submit" class="btn btn-danger" value="Xóa" name="delete"/>
+                                    <input onclick="return confirm('Bạn muốn xóa hẳn sách này?');" type="submit" class="btn btn-danger" value="Xóa" name="delete"/>
                                 </form>
                             </td>
                         </tr>
@@ -61,11 +61,11 @@
                 </table>
             </div>
             <div style="margin-left: 900px">
-                {{$authors->links()}}
+                {{$books->links()}}
             </div>
         </div>
     </div>
-    <script type="text/javascript">
+{{--    <script type="text/javascript">--}}
         {{--$(document).ready(function () {--}}
         {{--    $.ajaxSetup({--}}
         {{--        headers: {--}}
@@ -104,6 +104,5 @@
         {{--        });--}}
         {{--    });--}}
         {{--});--}}
-    </script>
     @include('admin.partial.footer')
-    @endsection
+@endsection
