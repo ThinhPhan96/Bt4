@@ -35,7 +35,7 @@
                             <td style="text-align: center">{{ $root->email }}</td>
                             <td class="name" style="text-align: center">{{ $root->name }}</td>
                             <td style="text-align: center">
-                                <a class=" edit-modal btn btn-warning btn-sm" data-id="{{$root->id}}"
+                                <a class=" edit-modal btn btn-warning" data-id="{{$root->id}}"
                                    data-name="{{$root->name}}">
                                     Sửa
                                 </a>

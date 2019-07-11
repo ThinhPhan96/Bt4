@@ -15,12 +15,16 @@
     <div class="container" style="margin-right: 20px">
         <div class="row">
             <div class="col-md-12">
-                <h1>Quản lý sach</h1>
+                <h1>Quản lý sách</h1>
             </div>
         </div>
         <div class="row">
             <div class="table table-responsive">
                 <table class="table table-striped table-bordered" id="table">
+                    <a data-toggle="modal" data-target="#create" href="#"
+                       class="create-modal btn btn-success">
+                        Thêm sách
+                    </a>
                     <ul class="nav nav-tabs float-right">
                         <li class="nav-item">
                             <a class="nav-link " href="{{ route('book.index') }}">Tất cả</a>
@@ -42,10 +46,7 @@
                         <th style="text-align: center">Trạng thái</th>
                         <th style="text-align: center">Người mượn</th>
                         <th class="text-center" width="150px">
-                            <a data-toggle="modal" data-target="#create" href="#"
-                               class="create-modal btn btn-success btn-sm">
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                            </a>
+                         Hành động
                         </th>
                     </tr>
                     {{ csrf_field() }}
@@ -70,14 +71,15 @@
                                 @endif
                             </td>
                             <td style="text-align: center">
-                                <a class=" edit-modal btn btn-warning btn-sm" data-id="{{$book->id}}"
+                                <button class=" edit-modal btn btn-warning" data-id="{{$book->id}}"
                                    data-name="{{$book->name}}">
                                     Sửa
-                                </a>
-                                <a class="delete-modal btn btn-danger btn-sm" data-id="{{$book->id}}"
-                                   data-name="{{$book->name}}">
-                                    Xóa
-                                </a>
+                                </button>
+                                <form action="{{ route('book.destroy', $book->id) }}" method="POST">
+                                    @method('DELETE')
+                                    @csrf
+                                    <input onclick="return confirm('Bạn muốn xóa quyển sách này?');" type="submit" class="btn btn-danger" value="Xóa" name="delete"/>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -136,7 +138,6 @@
                 }
             });
             const EDIT_URL = "{{route('admin.book.edit')}}";
-            const DELETE_URL = "{{route('admin.book.destroy')}}";
             var id;
             $('.edit-modal').on('click', function () {
                 id = $(this).data('id');
@@ -157,18 +158,6 @@
                             tdName.html(input2);
                         }
                     });
-                });
-            });
-            $('.delete-modal').on('click', function () {
-                id = $(this).data('id');
-                $.ajax({
-                    url: DELETE_URL,
-                    type: "POST",
-                    data: {
-                        id: id,
-                    },
-                    success: function (data) {
-                    }
                 });
             });
         });

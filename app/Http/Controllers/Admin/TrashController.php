@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Model\Admin\AuthorModel;
+use App\Model\Admin\BookModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class TrashController extends Controller
 {
     protected $authorModel;
-    public function __construct(AuthorModel $authorModel)
+    protected $bookModel;
+    public function __construct(AuthorModel $authorModel, BookModel $bookModel)
     {
         $this->authorModel = $authorModel;
+        $this->bookModel = $bookModel;
     }
 
     public function index()
@@ -20,33 +23,16 @@ class TrashController extends Controller
         return view('admin.trash.index', $author);
     }
 
-    public function create()
+    public function restore($id)
     {
-        //
+        $this->authorModel->getRestore($id);
+        return redirect()->route('trash.index')->with('message', "Khôi phục tác giả thành công");
     }
 
-    public function store(Request $request)
+    public function forceDelete($id)
     {
-        //
+        $this->authorModel->getForceDelete($id);
+        return redirect()->route('trash.index')->with('message', "Xóa tác giả thành công");
     }
 
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
-    }
 }

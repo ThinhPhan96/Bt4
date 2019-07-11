@@ -25,22 +25,26 @@ class AuthorController extends Controller
         return view('admin.author.index', $author);
     }
 
+    public function show($id)
+    {
+
+    }
+
     public function store(AuthorRequest $request)
     {
         $author = $this->authorModel->getStore($request->name);
         return redirect()->route('author.index')->with('message', "Thêm" . " $author->name thành công");
     }
 
+    public function destroy($id)
+    {
+        $this->authorModel->getDestroy($id);
+        return redirect()->route('author.index')->with('message', "Xóa thành công");
+    }
+
     public function changeAjaxAuthor(AuthorRequest $request)
     {
         $this->authorModel->getUpdate($request->id, $request->name);
-        return "success";
-    }
-
-    public function destroyAjaxAuthor(DeleteAuthorRequest $request)
-    {
-        $id = $request->id;
-        $this->authorModel->getDestroy($id);
         return "success";
     }
 }

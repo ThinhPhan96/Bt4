@@ -207,11 +207,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.auth.login') }}">{{ __('Admin Login') }}</a>
                         </li>
-                        @if (Route::has('admin.register'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.register') }}">{{ __('Admin Register') }}</a>
-                            </li>
-                        @endif
                     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
