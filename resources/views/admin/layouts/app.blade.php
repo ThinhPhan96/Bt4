@@ -32,9 +32,9 @@
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style type="text/css">
-        .row{
-            margin-left:0px;
-            margin-right:0px;
+        .row {
+            margin-left: 0px;
+            margin-right: 0px;
         }
 
         #wrapper {
@@ -62,15 +62,18 @@
             margin: 0;
             padding: 0;
         }
+
         #page-content-wrapper {
             padding-left: 0;
             margin-left: 0;
             width: 100%;
             height: auto;
         }
+
         #wrapper.active {
             padding-left: 150px;
         }
+
         #wrapper.active #sidebar-wrapper {
             left: 150px;
         }
@@ -94,6 +97,7 @@
             -ms-transition: background .5s;
             transition: background .5s;
         }
+
         .sidebar_name {
             padding-top: 25px;
             color: #fff;
@@ -113,7 +117,7 @@
 
         .sidebar-nav li a:hover {
             color: #fff;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             text-decoration: none;
         }
 
@@ -137,18 +141,18 @@
             background: none;
         }
 
-        #main_icon
-        {
-            float:right;
+        #main_icon {
+            float: right;
             padding-right: 65px;
-            padding-top:20px;
+            padding-top: 20px;
         }
-        .sub_icon
-        {
-            float:right;
+
+        .sub_icon {
+            float: right;
             padding-right: 65px;
-            padding-top:10px;
+            padding-top: 10px;
         }
+
         .content-header {
             height: 65px;
             line-height: 65px;
@@ -161,26 +165,29 @@
             display: inline-block;
         }
 
-        @media (max-width:767px) {
+        @media (max-width: 767px) {
             #wrapper {
                 padding-left: 70px;
                 transition: all .4s ease 0s;
             }
+
             #sidebar-wrapper {
                 left: 70px;
             }
+
             #wrapper.active {
                 padding-left: 150px;
             }
+
             #wrapper.active #sidebar-wrapper {
                 left: 150px;
                 width: 150px;
                 transition: all .4s ease 0s;
             }
         }
-</style>
+    </style>
 
-        </head>
+</head>
 <body>
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">

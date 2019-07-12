@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AuthorRequest;
-use App\Http\Requests\DeleteAuthorRequest;
 use App\Model\Admin\AuthorModel;
 use App\Repositories\UserRepository;
 use App\Http\Controllers\Controller;
@@ -23,11 +22,6 @@ class AuthorController extends Controller
     {
         $author = $this->authorModel->getIndex();
         return view('admin.author.index', $author);
-    }
-
-    public function show($id)
-    {
-
     }
 
     public function store(AuthorRequest $request)

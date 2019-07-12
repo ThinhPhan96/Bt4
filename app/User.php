@@ -36,4 +36,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getUpdate($id, $name)
+    {
+        $user = $this->find($id);
+        $user->name = $name;
+        $user->save();
+        return $user;
+    }
+
+    public function books()
+    {
+        return $this->belongsToMany(
+            'App\Model\Admin\BookModel',
+            'book_user',
+            'user_id',
+            'book_id'
+        )
+            ->withPivot('status', 'pay')->withTimestamps();
+    }
+
+    public function getBook()
+    {
+    }
 }

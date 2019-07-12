@@ -18,7 +18,7 @@ class CreateBooksTable extends Migration
             $table->unsignedInteger('author_id');
             $table->foreign('author_id')->references('id')->on('authors');
             $table->tinyInteger('status')->default(0);
-            $table->string('name')->unique();
+            $table->string('name');
             $table->softDeletes();
             $table->timestamps();
         });
