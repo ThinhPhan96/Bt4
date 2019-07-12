@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Model\Admin\AuthorModel;
 use App\Model\Admin\BookModel;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class TrashController extends Controller
 {
     protected $authorModel;
     protected $bookModel;
+
     public function __construct(AuthorModel $authorModel, BookModel $bookModel)
     {
         $this->authorModel = $authorModel;
@@ -34,5 +34,4 @@ class TrashController extends Controller
         $this->authorModel->getForceDelete($id);
         return redirect()->route('trash.index')->with('message', "Xóa tác giả thành công");
     }
-
 }

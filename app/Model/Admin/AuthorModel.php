@@ -27,7 +27,7 @@ class AuthorModel extends Model
 
     public function book()
     {
-        return $this->hasMany('App\Model\Admin\BookModel', 'author_id', 'id');
+        return $this->hasMany('App\Model\Admin\BookModel', 'author_id', 'id')->withTrashed();
     }
 
     public function getUpdate($id, $name)
@@ -41,13 +41,17 @@ class AuthorModel extends Model
     public function getDestroy($id)
     {
         $author = $this->find($id);
+        $author->book;
+        foreach ($author->book as $book) {
+            $book->delete();
+        }
         $author->delete();
         return $author;
     }
 
     public function getIndex()
     {
-        $author['authors'] = $this->with('book')->onlyTrashed()->paginate(PAGE_SIZE);
+        $author['authors'] = $this->onlyTrashed()->with('book')->paginate(PAGE_SIZE);
         $author['page'] = $this->paginate(PAGE_SIZE)->currentPage();
         $author['users'] = $this->paginate(PAGE_SIZE);
         return $author;
@@ -66,5 +70,4 @@ class AuthorModel extends Model
         $author->forceDelete();
         return $author;
     }
-
 }

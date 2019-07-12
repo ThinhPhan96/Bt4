@@ -4,6 +4,7 @@ namespace App\Model\Admin;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class BookModel extends Model
 {
@@ -15,10 +16,21 @@ class BookModel extends Model
 
     public function author()
     {
-        return $this->belongsTo('App\Model\Admin\AuthorModel','author_id','id');
+        return $this->belongsTo('App\Model\Admin\AuthorModel', 'author_id', 'id')->withTrashed();
     }
 
-    public function getStore($name,$authorId)
+    public function user()
+    {
+        return $this->belongsToMany(
+            'App\User',
+            'book_user',
+            'book_id',
+            'user_id'
+        )
+            ->withPivot('status', 'pay')->withTimestamps();
+    }
+
+    public function getStore($name, $authorId)
     {
         $book = new $this();
         $book->name = $name;
@@ -29,7 +41,7 @@ class BookModel extends Model
 
     public function getIndex()
     {
-        $book['books'] = $this->with('author')->paginate(PAGE_SIZE);
+        $book['books'] = $this->with('author', 'user')->paginate(PAGE_SIZE);
         $book['page'] = $this->paginate(PAGE_SIZE)->currentPage();
         $book['authors'] = AuthorModel::all();
         return $book;
@@ -37,17 +49,15 @@ class BookModel extends Model
 
     public function getWhere($key, $value)
     {
-        return self::with('author')->where($key, $value)->paginate(PAGE_SIZE);
+        return $this->with('author')->where($key, $value)->paginate(PAGE_SIZE);
     }
 
-    public function getAuthor()
+    public function getTrash()
     {
-        return self::with('author')->get();
-    }
-
-    public function getPage()
-    {
-        return self::paginate(PAGE_SIZE)->currentPage();
+        $book['books'] = $this->onlyTrashed()->with('author')->paginate(PAGE_SIZE);
+        $book['page'] = $this->paginate(PAGE_SIZE)->currentPage();
+        $book['users'] = $this->paginate(PAGE_SIZE);
+        return $book;
     }
 
     public function getUpdate($id, $name)
@@ -65,17 +75,30 @@ class BookModel extends Model
         return $book;
     }
 
+    public function errorRestore($id)
+    {
+        return $this->onlyTrashed()->where('id', $id)->first();
+    }
+
     public function getRestore($id)
     {
-        $author = $this->with('author')->onlyTrashed()->find($id);
-        $author->restore();
-        return $author;
+        $book = $this->with('author')->onlyTrashed()->find($id);
+        $book->restore();
+        return $book;
     }
 
     public function getForceDelete($id)
     {
-        $author = $this->with('author')->onlyTrashed()->find($id);
-        $author->forceDelete();
-        return $author;
+        $book = $this->with('author')->onlyTrashed()->find($id);
+        $book->forceDelete();
+        return $book;
+    }
+
+    public function statusBook($id, $pay)
+    {
+        $book = $this->find($id);
+        $book->user()->attach(Auth::id(), ['pay' => $pay]);
+        $book->status = 1;
+        $book->save();
     }
 }

@@ -27,15 +27,9 @@ class AdminModel extends Authenticatable
 
     public function getUpdate($id, $name)
     {
-        $admin = self::find($id);
+        $admin = $this->find($id);
         $admin->name = $name;
         $admin->save();
-        return $admin;
-    }
-
-    public function getIndex()
-    {
-        $admin['admin'] = self::all();
         return $admin;
     }
 }

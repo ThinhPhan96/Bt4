@@ -24,7 +24,8 @@ class BookRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:20',
+            'name' => 'required|max:20|unique:books,name',
+            'author_id' => 'required',
         ];
     }
 
@@ -33,6 +34,8 @@ class BookRequest extends FormRequest
         return [
             'name.required' => 'Vui lòng nhập Tên',
             'name.max:20' => 'Tên không quá 20 ký tự',
+            'name.unique' => 'Tên sách trùng, vui lòng nhập sách khác',
+            'author_id.required' => 'Chưa có tác giả'
         ];
     }
 }

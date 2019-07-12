@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\BookRequest;
+use App\Http\Requests\EditBookRequest;
 use App\Model\Admin\AuthorModel;
 use App\Model\Admin\BookModel;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class BookController extends Controller
@@ -34,12 +34,12 @@ class BookController extends Controller
     public function show($id)
     {
         $book['authors'] = $this->authorModel->all();
-        $book['page'] = $this->bookModel->getPage();
+        $book['page'] = $this->bookModel->paginate(PAGE_SIZE)->currentPage();
         $book['books'] = $this->bookModel->getWhere('status', $id);
         return view('admin.book.index', $book);
     }
 
-    public function editBook(BookRequest $request)
+    public function editBook(EditBookRequest $request)
     {
         $this->bookModel->getUpdate($request->id, $request->name);
         return "success";

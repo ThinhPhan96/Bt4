@@ -9,14 +9,15 @@ use App\Http\Controllers\Controller;
 class RootController extends Controller
 {
     protected $adminModel;
-    public function __construct( AdminModel $adminModel)
+
+    public function __construct(AdminModel $adminModel)
     {
         $this->adminModel = $adminModel;
     }
 
     public function index()
     {
-        $admin = $this->adminModel->getIndex();
+        $admin['admin'] = $this->adminModel->all();
         return view('admin.account.index', $admin);
     }
 

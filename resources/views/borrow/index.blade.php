@@ -37,11 +37,10 @@
                             <td class="name" style="text-align: center">{{ $book->name }}</td>
                             <td class="author_id" style="text-align: center">{{ $book->author['name'] }}</td>
                             <td style="text-align: center">
-                                <a class=" edit-modal btn btn-warning btn-sm" data-id="{{$book->id}}"
-                                        data-name="{{$book->name}}">
+                                <a href="{{route('borrow.edit', $book->id)}}" class=" btn btn-warning btn-sm">
                                     Mượn
                                 </a>
-                                <a href="{{route('borrow.show', $book->id)}}" class=" edit-modal btn btn-info btn-sm">
+                                <a href="{{route('borrow.show', $book->id)}}" class=" btn btn-info btn-sm">
                                     Xem chi tiết
                                 </a>
 
