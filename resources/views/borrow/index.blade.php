@@ -8,38 +8,40 @@
         </div>
     @endif
     @if (session('error'))
-        <div class="alert alert-danger">
+        <div style="float: right" class="alert alert-danger">
             {{ session('error') }}
         </div>
     @endif
     <div class="container" style="margin-right: 20px">
         <div class="row">
-            <div class="col-md-12">
-                <h1>Quản lý sách</h1>
-            </div>
-        </div>
-        <div class="row">
+            <h1>Quản lý sách</h1>
             <div class="table table-responsive">
                 <table class="table table-striped table-bordered" id="table">
                     <tr>
                         <th style="text-align: center">STT</th>
                         <th style="text-align: center">Tên sach</th>
                         <th style="text-align: center">Tên tác giả</th>
+                        <th style="text-align: center">Trạng thái</th>
                         <th class="text-center" width="150px">
                             Hành động
                         </th>
                     </tr>
                     {{ csrf_field() }}
-                    <?php  $no = 1; ?>
                     @foreach ($books as $key => $book)
                         <tr class="post{{$book->id}}">
-                            <td style="text-align: center">{{$key + 1 + ($page - 1) * PAGE_SIZE }}</td>
+                            <td style="text-align: center">{{$key + ONE + ($page - ONE) * PAGE_SIZE }}</td>
                             <td class="name" style="text-align: center">{{ $book->name }}</td>
                             <td class="author_id" style="text-align: center">{{ $book->author['name'] }}</td>
+                            <td class="author_id" style="text-align: center">
+                                @if($book->status == ZERO)
+                                    Chưa mượn
+                                @elseif($book->status == ONE)
+                                    Đã mượn
+                                @elseif($book->status == TWO)
+                                    Đang xem
+                                @endif
+                            </td>
                             <td style="text-align: center">
-                                <a href="{{route('borrow.edit', $book->id)}}" class=" btn btn-warning btn-sm">
-                                    Mượn
-                                </a>
                                 <a href="{{route('borrow.show', $book->id)}}" class=" btn btn-info btn-sm">
                                     Xem chi tiết
                                 </a>

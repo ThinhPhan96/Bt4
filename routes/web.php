@@ -27,7 +27,9 @@ Route::prefix('admin')->group(function () {
 
         Route::post('logout', 'Auth\Admin\LoginController@logout')->name('admin.auth.logout');
 
-        Route::resource('author', 'Admin\AuthorController');
+        Route::resource('author', 'Admin\AuthorController')->except('show');
+
+        Route::get('author/res', 'Admin\AuthorController@res')->name('author.res');
 
         Route::resource('trash', 'Admin\TrashController');
 
@@ -53,6 +55,8 @@ Route::prefix('admin')->group(function () {
         Route::post('root/edit', 'Admin\RootController@editAdmin')->name('admin.root.edit');
 
         Route::post('author/ajax', 'Admin\AuthorController@changeAjaxAuthor')->name('admin.author.ajax');
+
+
     });
 //    Route::get('register', 'Admin\AdminController@create')->name('admin.register');
 //
@@ -66,6 +70,8 @@ Route::prefix('admin')->group(function () {
 Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('borrow', 'BorrowController');
+
+    Route::resource('pay', 'PayController');
 
     Route::resource('user', 'UserController');
 

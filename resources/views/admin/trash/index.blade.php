@@ -24,7 +24,7 @@
                     <table class="table table-striped table-bordered" id="table">
                         <ul class="nav nav-tabs float-right">
                             <li class="nav-item">
-                                <a class="nav-link " href="{{route('trash.index')}}">Tác giả</a>
+                                <a class="nav-link active " href="{{route('trash.index')}}">Tác giả</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('trashbook.index')}}">Sách</a>
@@ -32,25 +32,26 @@
                         </ul>
                         <tr>
                             <th style="text-align: center">STT</th>
-                            <th style="text-align: center">Tên tác giả</th>
+                            <th style="text-align: center">tác giả</th>
                             <th class="text-center" width="150px">
                                 Hành động
                             </th>
                         </tr>
                         {{ csrf_field() }}
-                        <?php  $no = 1; ?>
                         @foreach ($authors as $key => $author)
                             <tr class="post{{$author->id}}">
-                                <td style="text-align: center">{{$key + 1 + ($page - 1) * PAGE_SIZE }}</td>
+                                <td style="text-align: center">{{$key + ONE + ($page - ONE) * PAGE_SIZE }}</td>
                                 <td class="name" style="text-align: center">{{ $author->name }}</td>
-                                <td style="text-align: center">
-                                    <form action="{{ route('admin.trash.restore', $author->id) }}" method="POST">
+                                <td style="text-align: center; width: 20%">
+                                    <form style="float: left" action="{{ route('admin.trash.restore', $author->id) }}"
+                                          method="POST">
                                         @csrf
                                         <input onclick="return confirm('Bạn muốn khôi phục tác giả này?');"
                                                type="submit"
                                                class="btn btn-info" value="Khôi phục" name="restore"/>
                                     </form>
-                                    <form action="{{ route('admin.trash.forcedelete', $author->id) }}" method="POST">
+                                    <form style="float: right"
+                                          action="{{ route('admin.trash.forcedelete', $author->id) }}" method="POST">
                                         @csrf
                                         <input onclick="return confirm('Bạn muốn xóa hẳn tác giả này?');" type="submit"
                                                class="btn btn-danger" value="Xóa" name="delete"/>
