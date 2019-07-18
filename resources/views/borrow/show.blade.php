@@ -16,21 +16,10 @@
             Tên Tac giả : {{$book->author['name'] }}
         </div>
         <br>
-        <div class="author_name">
-            Trạng thái :
-            @if($book->status == 0)
-                Chưa mượn
-            @elseif($book->status == 1)
-                Đã mượn
-            @elseif($book->status == 2)
-                Đang xem
-            @endif
-        </div>
         <br>
         <div>
             <a href="{{route('borrow.edit', $book->id)}}" class="btn btn-info">Mượn sách</a>
         </div>
     </div>
-
     @include('partial.footer')
 @endsection

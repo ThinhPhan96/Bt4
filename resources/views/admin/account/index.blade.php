@@ -14,11 +14,7 @@
     @endif
     <div class="container" style="margin-right: 20px">
         <div class="row">
-            <div class="col-md-12">
-                <h1>Quản lý</h1>
-            </div>
-        </div>
-        <div class="row">
+            <h1>Quản lý người dùng</h1>
             <div class="table table-responsive">
                 <table class="table table-striped table-bordered" id="table">
                     <tr>
@@ -29,7 +25,6 @@
                         </th>
                     </tr>
                     {{ csrf_field() }}
-                    <?php  $no = 1; ?>
                     @foreach ($admin as $key => $root)
                         <tr class="post{{$root->id}}">
                             <td style="text-align: center">{{ $root->email }}</td>
@@ -45,8 +40,6 @@
                 </table>
             </div>
         </div>
-
-
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -72,9 +65,14 @@
                         data: {
                             id: id, name: input2,
                         },
-                        success: function (data) {
+                        success: function () {
                             tdName.html(input2);
-                        }
+                            $.notify('Sửa thành công','success');
+                        },
+                        error: () => {
+                            $.notify('Sửa thất bại','error');
+                        },
+
                     });
                 });
             });

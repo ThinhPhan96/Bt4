@@ -19,7 +19,7 @@ class AuthorModel extends Model
 
     public function getStore($name)
     {
-        $author = new $this();
+        $author = new AuthorModel();
         $author->name = $name;
         $author->save();
         return $author;

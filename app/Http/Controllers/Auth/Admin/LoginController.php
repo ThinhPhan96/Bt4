@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -29,7 +30,7 @@ class LoginController extends Controller
     {
         //valiedate dữ liệu đăng nhập
         $this->validate($request, array(
-            'email'=>'required',
+            'email'=>'required|email|exists:admins,email',
             'password'=>'required|min:6',
         ));
 
@@ -43,7 +44,7 @@ class LoginController extends Controller
         };
         //nếu đăng nhập thất bại thì quay trở về form đăng nhập
         // với giá trị của  2 ô input cũ là email và remember
-        return redirect()->withInput($request->only('email', 'remember'));
+        return redirect()->withInput($request->only('email', 'password', 'remember'));
     }
     //phương thức này dùng để đăng xuất
     public function logout()

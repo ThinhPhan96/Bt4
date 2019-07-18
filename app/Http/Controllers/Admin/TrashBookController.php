@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 class TrashBookController extends Controller
 {
     protected $bookModel;
+
     public function __construct(BookModel $bookModel)
     {
         $this->bookModel = $bookModel;

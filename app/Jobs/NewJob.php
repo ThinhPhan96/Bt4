@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Model\Admin\BookModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -17,9 +18,11 @@ class NewJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    protected $bookId;
+
+    public function __construct($id)
     {
-        //
+        $this->bookId = $id;
     }
 
     /**
@@ -29,6 +32,10 @@ class NewJob implements ShouldQueue
      */
     public function handle()
     {
-        //
+        $book = BookModel::find($this->bookId);
+        if ($book->status == 2) {
+            $book->status = 0;
+            $book->save();
+        }
     }
 }

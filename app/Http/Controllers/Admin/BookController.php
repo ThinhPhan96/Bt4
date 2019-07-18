@@ -7,6 +7,7 @@ use App\Http\Requests\EditBookRequest;
 use App\Model\Admin\AuthorModel;
 use App\Model\Admin\BookModel;
 use App\Http\Controllers\Controller;
+use App\User;
 
 class BookController extends Controller
 {
@@ -21,6 +22,7 @@ class BookController extends Controller
 
     public function index()
     {
+
         $book = $this->bookModel->getIndex();
         return view('admin.book.index', $book);
     }
@@ -28,7 +30,7 @@ class BookController extends Controller
     public function store(BookRequest $request)
     {
         $book = $this->bookModel->getStore($request->name, $request->author_id);
-        return redirect()->route('book.index')->with('message', "Thêm" . " $book->name thành công");
+        return $book;
     }
 
     public function show($id)
@@ -47,6 +49,10 @@ class BookController extends Controller
 
     public function destroy($id)
     {
+        $book = $this->bookModel->find($id);
+        if ($book->status == ONE) {
+            return redirect()->route('book.index')->with('error', "Sách đang có người mượn");
+        }
         $this->bookModel->getDestroy($id);
         return redirect()->route('book.index')->with('message', "Xóa thành công");
     }

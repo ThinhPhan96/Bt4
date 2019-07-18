@@ -2,6 +2,7 @@
 
 namespace App\Model\Admin;
 
+use App\Jobs\NewJob;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,7 @@ class BookModel extends Model
 
     public function getStore($name, $authorId)
     {
-        $book = new $this();
+        $book = new BookModel();
         $book->name = $name;
         $book->author_id = $authorId;
         $book->save();
@@ -98,7 +99,16 @@ class BookModel extends Model
     {
         $book = $this->find($id);
         $book->user()->attach(Auth::id(), ['pay' => $pay]);
-        $book->status = 1;
+        $book->status = ONE;
         $book->save();
+    }
+
+    public function disBook($id)
+    {
+        $book = $this->find($id);
+        $book->status = TWO;
+        $book->save();
+        NewJob::dispatch($id)
+            ->delay(now()->addMinutes(ONE));
     }
 }

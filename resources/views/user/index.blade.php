@@ -2,16 +2,6 @@
 
 @section('content')
     @include('partial.sidebar')
-    @if (session('message'))
-        <div style="float: right" class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
     <div class="container" style="margin-right: 20px">
         <div class="row">
             <div class="col-md-12">
@@ -19,31 +9,52 @@
             </div>
         </div>
         <div class="row">
-            <div class="table table-responsive">
-                <table class="table table-striped table-bordered" id="table">
-                    <tr>
-                        <th style="text-align: center">Email</th>
-                        <th style="text-align: center">Tên người dùng</th>
-                        <th class="text-center" width="150px">
-                            Hành động
-                        </th>
-                    </tr>
-                    {{ csrf_field() }}
+            <div class="form-three widget-shadow">
+                @if (session('message'))
+                    <div style="float: right" class="alert alert-success">
+                        {{ session('message') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div style="float: right" class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                @if ($errors->any())
+                    <div style="float: right" class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <div class="table table-responsive">
+                    <table class="table table-striped table-bordered" id="table">
+                        <tr>
+                            <th style="text-align: center">Tên user</th>
+                            <th style="text-align: center">Email</th>
+                            <th class="text-center" width="150px">
+                                Hành động
+                            </th>
+                        </tr>
+                        {{ csrf_field() }}
                         <tr class="post{{$user->id}}">
-                            <td style="text-align: center">{{ $user->email }}</td>
                             <td class="name" style="text-align: center">{{ $user->name }}</td>
+                            <td style="text-align: center">{{ $user->email }}</td>
                             <td style="text-align: center">
-                                <a class=" edit-modal btn btn-warning" data-id="{{$user->id}}"
-                                   data-name="{{$user->name}}">
+                                <button class=" edit-modal btn btn-warning" data-id="{{$user->id}}"
+                                        data-name="{{$user->name}}">
                                     Sửa
-                                </a>
+                                </button>
                             </td>
                         </tr>
-                </table>
+                    </table>
+                </div>
+                <div style="margin-left: 900px">
+                </div>
             </div>
         </div>
-
-
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -71,7 +82,11 @@
                         },
                         success: function (data) {
                             tdName.html(input2);
-                        }
+                            $.notify('Sửa thành công','success');
+                        },
+                        error: () => {
+                            $.notify('Sửa thất bại','error');
+                        },
                     });
                 });
             });

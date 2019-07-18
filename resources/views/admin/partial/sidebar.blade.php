@@ -1,7 +1,6 @@
 <div id="sidebar-wrapper" style="margin-left: -70px">
     <ul id="sidebar_menu" class="sidebar-nav">
-        <li class="sidebar-brand"><a id="menu-toggle" href="{{url('admin')}}">Menu<span id="main_icon"
-                                                                                        class="glyphicon glyphicon-align-justify"></span></a>
+        <li class="sidebar-brand"><a id="menu-toggle" href="{{url('admin')}}">Menu</a>
         </li>
     </ul>
     <ul class="sidebar-nav" id="sidebar">
